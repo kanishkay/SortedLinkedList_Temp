@@ -4,7 +4,8 @@
 
 template<class T>
 SortedList<T>::SortedList() {
-
+    length = 0;
+    currentPos = -1;    // 0
 }
 
 template<class T>
@@ -29,12 +30,68 @@ bool SortedList<T>::Contains(T someItem) {
 
 template<class T>
 void SortedList<T>::PutItem(T item) {
+    if (IsFull()) {
+        return;
+    }
+    int i;
+    for (i = 0; i < length; i++) {
+        if (item < info[i]) {
+            break;
+        }
+    for (int j = length; j >= i + 1 ; j--) {            // Stop one before
+        info[j] = info[j - 1];
+    }
+    info[i] = item;
+    length++;       // Bookkeeping
+}
+
+    NodeT *newNode = new NodeT;
+    newNode->info = item;
+    newNode->next = nullptr;
+    // Empty Case
+    if (head == nullptr) {
+        head = new NodeT;
+        head->info = item;
+        head-> next = nullptr;
+        return;
+    }
+    NodeT *prevN = nullptr;
+    NodeT *currN = head;
+
+    // Middle
+    while (currN != nullptr) {
+        if (item < currN->info) {
+            NodeT *newNode = new NodeT;
+            newNode->info = item;
+            newNode->next = currN;
+            if (prevN == nullptr) {
+                head = newNode;
+            }
+            else {
+                prevN->next = newNode;
+            }
+            length++;
+            return;
+        }
+        prevN = currN;
+        currN = currN->next;
+    }
+
+
 
 }
 
 template<class T>
 void SortedList<T>::DeleteItem(T item) {
-
+    for (int i = 0; i < length; i++) {
+        if (item == info[i]) {
+            for (int j = i; j < length; j++) {
+                info[j] = info[j + 1];
+            }
+            length--;
+            return;
+        }
+    }
 }
 
 template<class T>
